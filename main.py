@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import pyodbc
+import pymssql
 import os
 from datetime import datetime
 
@@ -9,12 +9,14 @@ server = os.environ.get('AZURE_SQL_SERVER')
 database = os.environ.get('AZURE_SQL_DATABASE')
 username = os.environ.get('AZURE_SQL_USERNAME')
 password = os.environ.get('AZURE_SQL_PASSWORD')
-driver = '{ODBC Driver 18 for SQL Server}'
-
-connection_string = f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
 
 def get_db_connection():
-    return pyodbc.connect(connection_string)
+    return pymssql.connect(
+        server=server.replace('tcp:', ''),
+        user=username,
+        password=password,
+        database=database
+    )
 
 @app.route('/api/login', methods=['POST'])
 def login():
