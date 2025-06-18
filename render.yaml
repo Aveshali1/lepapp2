@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: azure-sql-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app
+    envVars:
+      - key: AZURE_SQL_SERVER
+        value: tcp:azuredatabase001.database.windows.net
+      - key: AZURE_SQL_DATABASE
+        value: azuredatabase1
+      - key: AZURE_SQL_USERNAME
+        value: Avesh01
+      - key: AZURE_SQL_PASSWORD
+        value: your_database_password_here
